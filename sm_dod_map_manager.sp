@@ -20,6 +20,14 @@ public Plugin myinfo =
 	url = "https://github.com/jltobler/sm_dod_map_manager"
 };
 
+void plugin_print(const char[] format, any ...)
+{
+	char buf[256];
+
+	VFormat(buf, sizeof(buf), format, 2);
+	PrintToChatAll("\x04[MapManager]\x01 %s", buf);
+}
+
 void enable_rotation()
 {
 	SetConVarInt(server_time_limit, GetConVarInt(mm_time_limit));
@@ -40,10 +48,10 @@ bool check_rotation_enabled()
 void toggle_rotation()
 {
 	if (check_rotation_enabled()) {
-		PrintToChatAll("\x04[MapManager]\x01 Map rotation disabled!");
+		plugin_print("Map rotation disabled!");
 		disable_rotation();
 	} else {
-		PrintToChatAll("\x04[MapManager]\x01 Map rotation enabled!");
+		plugin_print("Map rotation enabled!");
 		enable_rotation();
 	}
 }
