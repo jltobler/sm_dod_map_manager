@@ -144,10 +144,23 @@ public void rotation_menu(TopMenu m, TopMenuAction action, TopMenuObject o, int 
 	}
 }
 
+public void vote_rotation_menu(TopMenu m, TopMenuAction action, TopMenuObject o, int param, char[] buf, int max)
+{
+	switch (action) {
+	case TopMenuAction_DisplayOption:
+		strcopy(buf, max, "Rotation Vote");
+	case TopMenuAction_SelectOption:
+		vote_rotation(param);
+	case TopMenuAction_DrawOption:
+		buf[0] = !IsNewVoteAllowed() ? ITEMDRAW_IGNORE : ITEMDRAW_DEFAULT;
+	}
+}
+
 public void OnAdminMenuReady(Handle handle)
 {
 	TopMenu top_menu = TopMenu.FromHandle(handle);
 	TopMenuObject server_commands;
+	TopMenuObject voting_commands;
 
 	if (top_menu == admin_menu)
 		return;
@@ -155,18 +168,28 @@ public void OnAdminMenuReady(Handle handle)
 	admin_menu = top_menu;
 
 	server_commands = FindTopMenuCategory(admin_menu, ADMINMENU_SERVERCOMMANDS);
-	if (server_commands == INVALID_TOPMENUOBJECT)
-		return;
+	if (!(server_commands == INVALID_TOPMENUOBJECT))
+		AddToTopMenu(
+			admin_menu,
+			"sm_togglerotation",
+			TopMenuObject_Item,
+			rotation_menu,
+			server_commands,
+			"sm_togglerotation",
+			ADMFLAG_GENERIC
+		);
 
-	AddToTopMenu(
-		admin_menu,
-		"sm_togglerotation",
-		TopMenuObject_Item,
-		rotation_menu,
-		server_commands,
-		"sm_togglerotation",
-		ADMFLAG_GENERIC
-	);
+	voting_commands = FindTopMenuCategory(admin_menu, ADMINMENU_VOTINGCOMMANDS);
+	if (!(voting_commands == INVALID_TOPMENUOBJECT))
+		AddToTopMenu(
+			admin_menu,
+			"sm_voterotation",
+			TopMenuObject_Item,
+			vote_rotation_menu,
+			voting_commands,
+			"sm_voterotation",
+			ADMFLAG_VOTE
+		);
 }
 
 public void OnPluginStart()
