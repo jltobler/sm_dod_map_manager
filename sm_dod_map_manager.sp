@@ -9,12 +9,15 @@ ConVar mm_vote_percent;
 ConVar mm_vote_time;
 ConVar mm_time_limit;
 ConVar mm_win_limit;
+ConVar mm_default_map;
 
 ConVar server_time_limit;
 ConVar server_win_limit;
 
 #define VOTE_YES "VOTE_YES"
 #define VOTE_NO "VOTE_NO"
+
+#define DEFAULT_MAP "dod_donner"
 
 public Plugin myinfo =
 {
@@ -41,8 +44,20 @@ void enable_rotation()
 
 void disable_rotation()
 {
+	char current_map[256];
+	char default_map[256];
+
 	SetConVarInt(server_time_limit, 0);
 	SetConVarInt(server_win_limit, 0);
+
+	GetCurrentMap(current_map, sizeof(current_map));
+	GetConVarString(mm_default_map, default_map, sizeof(default_map));
+
+	if (!(FindMap(default_map, default_map, sizeof(default_map)) == FindMap_Found))
+		default_map = DEFAULT_MAP;
+
+	if (strcmp(current_map, default_map))
+		ForceChangeLevel(default_map, "map rotation disabled");
 }
 
 bool check_rotation_enabled()
@@ -203,6 +218,7 @@ public void OnPluginStart()
 	mm_vote_time = CreateConVar("mm_votetime", "15", "Rotation vote time for map manager");
 	mm_time_limit = CreateConVar("mm_timelimit", "25", "Time limit set by map manager");
 	mm_win_limit = CreateConVar("mm_winlimit", "5", "Win limit set by map manager");
+	mm_default_map = CreateConVar("mm_defaultmap", DEFAULT_MAP, "Default map used for map manager");
 
 	server_time_limit = FindConVar("mp_timelimit");
 	server_win_limit = FindConVar("mp_winlimit");

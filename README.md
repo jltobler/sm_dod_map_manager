@@ -14,3 +14,4 @@ automatically switches to the default map when player count is low.
 - `mm_winlimit`: the win limit set by the map manager when rotation is enabled
 - `mm_votepercent`: the percent threshold required for map rotation vote to pass
 - `mm_votetime`: the time duration of the map rotation vote
+- `mm_defaultmap`: the default map changed to when the map rotation ends
