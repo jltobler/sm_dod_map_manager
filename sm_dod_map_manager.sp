@@ -32,9 +32,14 @@ void disable_rotation()
 	SetConVarInt(server_win_limit, 0);
 }
 
+bool check_rotation_enabled()
+{
+	return GetConVarInt(server_time_limit) || GetConVarInt(server_win_limit);
+}
+
 void toggle_rotation()
 {
-	if (GetConVarInt(server_time_limit) || GetConVarInt(server_win_limit)) {
+	if (check_rotation_enabled()) {
 		PrintToChatAll("\x04[MapManager]\x01 Map rotation disabled!");
 		disable_rotation();
 	} else {
