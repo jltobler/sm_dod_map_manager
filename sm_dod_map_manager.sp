@@ -38,6 +38,19 @@ void plugin_print(const char[] format, any ...)
 	PrintToChatAll("\x04[MapManager]\x01 %s", buf);
 }
 
+public Action change_map(Handle timer)
+{
+	char default_map[256];
+
+	GetConVarString(mm_default_map, default_map, sizeof(default_map));
+	if (!(FindMap(default_map, default_map, sizeof(default_map)) == FindMap_Found))
+		default_map = DEFAULT_MAP;
+
+	ForceChangeLevel(default_map, "map rotation disabled");
+
+	return Plugin_Stop;
+}
+
 void enable_rotation()
 {
 	SetConVarInt(server_time_limit, GetConVarInt(mm_time_limit));
@@ -60,7 +73,9 @@ void disable_rotation()
 
 	if (strcmp(current_map, default_map)) {
 		disabling_rotation = true;
-		ForceChangeLevel(default_map, "map rotation disabled");
+
+		plugin_print("Changing map to %s...", default_map);
+		CreateTimer(3.0, change_map);
 	}
 }
 
