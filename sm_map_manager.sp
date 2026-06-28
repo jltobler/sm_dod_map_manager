@@ -26,7 +26,7 @@ public Plugin myinfo =
 	name = "Map Manager",
 	author = "ToblerOwnz",
 	description = "Manages the server map",
-	version = "0.1.0",
+	version = "0.2.0",
 	url = "https://github.com/jltobler/sm_dod_map_manager"
 };
 
