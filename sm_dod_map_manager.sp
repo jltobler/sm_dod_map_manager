@@ -5,6 +5,8 @@
 
 TopMenu admin_menu = null;
 
+bool disabling_rotation = false;
+
 ConVar mm_vote_percent;
 ConVar mm_vote_time;
 ConVar mm_time_limit;
@@ -56,8 +58,10 @@ void disable_rotation()
 	if (!(FindMap(default_map, default_map, sizeof(default_map)) == FindMap_Found))
 		default_map = DEFAULT_MAP;
 
-	if (strcmp(current_map, default_map))
+	if (strcmp(current_map, default_map)) {
+		disabling_rotation = true;
 		ForceChangeLevel(default_map, "map rotation disabled");
+	}
 }
 
 bool check_rotation_enabled()
@@ -205,6 +209,16 @@ public void OnAdminMenuReady(Handle handle)
 			"sm_voterotation",
 			ADMFLAG_VOTE
 		);
+}
+
+public void OnMapStart()
+{
+	if (!disabling_rotation)
+		return;
+
+	SetConVarInt(server_time_limit, 0);
+	SetConVarInt(server_win_limit, 0);
+	disabling_rotation = false;
 }
 
 public void OnPluginStart()
