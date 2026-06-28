@@ -3,7 +3,7 @@
 -include config.mak
 
 SM_URL    = https://sm.alliedmods.net/smdrop/1.12/sourcemod-1.12.0-git7210-linux.tar.gz
-PLUGIN    = sm_dod_map_manager
+PLUGIN    = sm_map_manager
 BUILD_DIR = build
 DEPS_DIR  = deps
 
