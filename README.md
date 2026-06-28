@@ -1,7 +1,8 @@
-# sm_dod_map_manager
+# sm_map_manager
 
-A SourceMod plugin for Day of Defeat: Source that monitors the server and
-automatically switches to the default map when player count is low.
+A SourceMod plugin for Day of Defeat: Source that adds admin commands to
+enable/disable the server map rotation without requiring evelated access to set
+cvars.
 
 ## Commands
 
